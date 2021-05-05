@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reply">
+<!-- 	<resultMap type="com.mega.mvcproject02" id="qnaVO">
+		<result property="qid" column="QID"/>
+		<result property="qtype" column="QTYPE"/>
+		<result property="qtitle" column="QTITLE"/>
+		<result property="qcontents" column="QCONTENTS"/>
+		<result property="qdate" column="QDATE"/>
+	</resultMap>
+	<resultMap type="com.mega.mvcproject02" id="replyVO">
+		<result property="rid" column="RID"/>
+		<result property="qid" column="QID"/>
+		<result property="reply" column="REPLY"/>
+		<collection property="qnaVO" resultMap="qnaVO"></collection>
+	</resultMap> -->
+	<insert id="rinsert" parameterType="replyVO"><!-- memberVO는 mybatis-config.xml 파일의 alias="memberVO" 이랑 일치시켜줌. -->
+		insert into REPLY values (#{rid}, #{qid}, #{reply})
+		<!-- <selectKey keyProperty="qid" resultType="Integer" order="AFTER"> SELECT LAST_INSERT_ID() </selectKey> -->
+	</insert>
+	<delete id="rdelete" >
+		delete from REPLY where rid = #{rid}
+	</delete>
+	<update id="rupdate" parameterType="replyVO" >
+		update REPLY set reply = #{reply}
+	</update>
+	<select id="rselect" resultType="replyVO" parameterType="replyVO"> 
+		select * from REPLY where qid = #{qid}
+		<!-- SELECT * FROM QNA q WHERE ROWNUM = 1 ORDER BY QID DESC -->
+		<!-- 내림차순 -> 가장위에 row1개 => 가장 마지막에 저장된 데이터값을 불러올때 -->
+	</select>
+	<select id="rall" resultType="replyVO"> 
+		SELECT * FROM REPLY WHERE ROWNUM &lt; 10 ORDER BY QID DESC
+	</select>
+	<select id="join" resultType="qnaVO">
+<!-- SELECT q.QID, q.QTYPE, q.QTITLE, q.QCONTENTS, q.QDATE FROM QNA q LEFT JOIN REPLY r ON q.QID = r.QID WHERE q.QID = #{QID} -->
+		SELECT * FROM QNA q LEFT JOIN REPLY r ON (r.QID = q.QID) ORDER BY q.QID DESC
+	</select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- sql문, crud정의 -->
+<mapper namespace="ruser">
+<!-- CRUD4가지 기능이 들어감 -->
+
+	<!-- return 값이 MemberVO이기 때문에 resultType 필요 -->
+	<select id="login" parameterType="ruserVO" resultType="ruserVO">
+		select * from RUSER where userid = #{userid} and userpw = #{userpw}
+	</select>
+	
+	<!-- idcheck 메서드의 파라메터 타입은 String, 결과값은 int -->
+	<select id="idcheck" parameterType="String"  resultType="int">
+		select count(*) from RUSER where userid = #{userid} 
+	</select>
+	
+	<insert id="insert" parameterType="ruserVO">
+		insert into RUSER values (#{userid}, #{userpw}, #{username}, #{usertel}, #{useremail}, #{userbirth},
+		#{usergender}, #{usertype}, #{userroom}, #{userinterest})
+	</insert>
+
+	<delete id="delete" parameterType="ruserVO">
+		delete from RUSER where userid = #{userid} and userpw = #{userpw}
+	</delete>
+	
+	<update id="update" parameterType="ruserVO">
+		update RUSER set userpw = #{userpw}, usertel = #{usertel}, useremail = #{useremail}, usertype = #{usertype}, userroom = #{userroom}, userinterest = #{userinterest} 
+		where userid = #{userid}
+	</update>
+	
+	<select id="select" parameterType="ruserVO" resultType="ruserVO">
+		select * from RUSER where userid = #{userid} and userpw = #{userpw}
+	</select>
+	
+	<select id="findpw" parameterType="ruserVO" resultType="ruserVO">
+		select * from RUSER where userid = #{userid} and username = #{username} and useremail = #{useremail}
+	</select>
+	
+	<select id="checkBasket" parameterType="String" resultType = "ruserVO">
+		select usertype, userroom, userinterest from RUSER where userid = #{userid}
+	</select>
+
+</mapper>
