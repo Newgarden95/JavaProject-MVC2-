@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- bean: 싱글톤 객체 -->
+	<!-- context파일: 프로젝트 전체 영역에서 사용할 싱글톤 객체를 정의하는 파일 -->
+	<!-- 스프링 프로그램이 시작할 때, 어노테이션과 이 파일을 읽어서 싱글톤을 만든다. 만들 때 문제가 생기면, 스프링 프로그램이 
+		시작되지 않는다 == 404에러가 시작됨 ~> 콘솔을 보고 에러의 맨마지막에 보여지는 에러를 확인하여 수정 -->
+
+
+	<!-- myBatis 싱글톤 객체 필요 -->
+	<!-- SqlSessionTemplate mybatis = new SqlSessionTemplate(config); public 
+		SqlSessionTemplate(SqlSessionFactoryBean config){ this.config = config; } -->
+	<bean id="mybatis" class="org.mybatis.spring.SqlSessionTemplate"> <!-- mybatis는 싱글톤설정후 한번만 객체생성할 때 생성된 객체 변수이름 -->
+		<!-- 파라메터있는 생성자에 값을 넣는 방법 사용(멤버변수에 값을 넣는 방법2가지 중 1개), 안넣으면 실행이 안됨!! -->
+		<constructor-arg ref="config"></constructor-arg> <!-- 파라미터 생성자는 constructor-arg사용 반드시 config필요!!! -->
+	</bean>
+
+	<!-- myBatis 설정만 담당하는 싱글톤 객체가 필요 => mapper관리해주는 config설정, dbcp설정 -->
+	<!-- String configLocation; ~> 정수, 실수, 문자, 논리, string -->
+	<!-- DataSource dataSource; ~> 참조형 변수는 주소 -->
+	<bean id="config" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 매퍼파일이 뭐고 dbcp를 어떤걸 끼겠다라는 걸 설정해주는 부분 -->
+		<!-- 매퍼관리해주는 거 하나, dbcp연결관련해서 하나 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property><!-- value: 정수 실수 string 껴줄떄 -->
+		<property name="dataSource" ref="dbcp"></property> <!-- ref: 주소를 껴줄때 아래 생성한 dbcp 객체의 주소를 껴줄경우 ref사용 -->
+	</bean>
+
+	<!-- dbcp 싱글톤 객체 필요 -->
+	<!-- dbcp에 대한 객체가 생성된것!! JDBC 1~2단계에 해당하는 부분 -->
+	<bean id="dbcp" class="org.apache.commons.dbcp.BasicDataSource"><!-- DBCP dbcp = new DBCP(); -->
+		<!-- 객체안에 멤버변수 4개, property태그 는 set메서드의 역할을 함 -->
+		<!-- 생성자에 값을넣어 멤버변수 설정하는 방법 중 set메서드 활용한 것 -->
+		<property name="driverClassName"
+			value="oracle.jdbc.OracleDriver"></property>
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+</beans>
