@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  <!-- 매퍼파일들을 관리해줄 xml파일 -->
+<configuration>
+<!-- 테이블 개수 만큼 생성 -->
+   <typeAliases>
+		<typeAlias type="com.mega.project.FacilityVO" alias="fVO"></typeAlias> <!-- FacilityVO -->
+		<typeAlias type="com.mega.project.ProductVO" alias="productVO"></typeAlias> 
+		<typeAlias type="com.mega.project.RuserVO" alias="ruserVO"></typeAlias>
+		<typeAlias type="com.mega.project.MypageVO" alias="mypageVO"></typeAlias>
+		<typeAlias type="com.mega.project.QnaVO" alias="qnaVO"></typeAlias>
+		<typeAlias type="com.mega.project.ReplyVO" alias="replyVO"></typeAlias>
+   </typeAliases>
+   <mappers>
+      <mapper resource="mapper/facilityMapper.xml" /> <!-- sql문이 저장된 xml파일을 매퍼로 사용 -->
+      <mapper resource="mapper/productMapper.xml" /> <!-- sql문이 저장된 xml파일을 매퍼로 사용 -->
+      <mapper resource="mapper/ruserMapper.xml" />
+      <mapper resource="mapper/mypageMapper.xml" />
+      <mapper resource="mapper/qnaMapper.xml" />
+	  <mapper resource="mapper/replyMapper.xml" />
+   </mappers>
+</configuration>
